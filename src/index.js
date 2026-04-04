@@ -1,4 +1,6 @@
-import binaryen from "../binaryen.base.js";
+import initBinaryen from "../binaryen.base.js";
+
+const binaryen = await initBinaryen();
 
 const OriginalModule = binaryen.Module;
 const originalWrapModule = binaryen.wrapModule;

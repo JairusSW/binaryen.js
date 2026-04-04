@@ -33,6 +33,7 @@
   },
   "files": [
     "binaryen.base.js",
+    "binaryen_js.wasm",
     "index.js",
     "index.d.ts",
     "package.json",
