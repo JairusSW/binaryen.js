@@ -32,6 +32,7 @@
     "bundle": "node scripts/bundle.js"
   },
   "files": [
+    "binaryen.base.js",
     "index.js",
     "index.d.ts",
     "package.json",

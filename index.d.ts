@@ -1783,8 +1783,17 @@ declare module binaryen {
     addDebugInfoFileName(filename: string): number;
     getDebugInfoFileName(index: number): string | null;
     setDebugLocation(func: FunctionRef, expr: ExpressionRef, fileIndex: number, lineNumber: number, columnNumber: number): void;
+    setBranchHint(func: FunctionRef, expr: ExpressionRef, hint: -1 | 0 | 1 | boolean): void;
+    getBranchHint(func: FunctionRef, expr: ExpressionRef): -1 | 0 | 1;
     copyExpression(expr: ExpressionRef): ExpressionRef;
+    addBranchHints(branchHints: BranchHints): Module;
   }
+
+  type BranchHintValue = boolean | 0 | 1;
+  interface BranchHintMapLike {
+    forEach(callbackfn: (value: BranchHintValue[], key: string) => void): void;
+  }
+  type BranchHints = BranchHintMapLike | Record<string, BranchHintValue[]>;
 
   interface MemorySegment {
     offset: ExpressionRef;
@@ -1798,6 +1807,7 @@ declare module binaryen {
   }
 
   function wrapModule(ptr: number): Module;
+  function addBranchHints(module: Module, branchHints: BranchHints): Module;
 
   function getExpressionId(expression: ExpressionRef): number;
   function getExpressionType(expression: ExpressionRef): Type;

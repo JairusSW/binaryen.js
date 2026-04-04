@@ -66,3 +66,21 @@ assert(typeof js === "string" && js.length);
 console.log("wrapping an existing module");
 var wrapped = binaryen.wrapModule(mod.ptr);
 assert(wrapped.getFunction("main"));
+
+console.log("adding branch hints");
+var branchModule = binaryen.parseText(`
+(module
+ (func $branchy (param $x i32)
+  (block $out
+   (br_if $out
+    (local.get $x)
+   )
+  )
+ )
+)
+`);
+var hinted = branchModule.addBranchHints({ branchy: [1] });
+var hintedText = hinted.emitText();
+assert(hintedText.includes('@metadata.code.branch_hint "\\01"'));
+var hintedBinary = hinted.emitBinary();
+assert(Buffer.from(hintedBinary).includes(Buffer.from("metadata.code.branch_hint")));
